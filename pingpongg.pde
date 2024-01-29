@@ -2,11 +2,11 @@ float xPos, yPos;
 float xSpeed = -5, ySpeed = 1;
 
 // Color
-float[] color1 = {random(0, 255), random(0, 255), random(0, 255)};
-float[] color2 = {random(0, 255), random(0, 255), random(0, 255)};
-float[] color3 = {random(0, 255), random(0, 255), random(0, 255)};
+int[] color1 = {int(random(0, 255)), int(random(0, 255)), int(random(0, 255))};
+int[] color2 = {int(random(0, 255)), int(random(0, 255)), int(random(0, 255))};
+int[] color3 = {int(random(0, 255)), int(random(0, 255)), int(random(0, 255))};
 
-float score = 0;
+int score = 0;
 
 void setup() {
   size(700, 500);
@@ -16,11 +16,13 @@ void setup() {
 }
 
 void draw() {
-  rectMode(LEFT);
+  rectMode(CORNER);
   fill(100, 100, 100, 20);
   rect(0, 0, 700, 500);
   fill(255);
-  text(score, width / 2, height / 2);
+  textAlign(CENTER);
+  textSize(32);
+  
   noStroke();
   fill(color3[0], color3[1], color3[2]);
   
@@ -48,13 +50,35 @@ void draw() {
     score++;
     xSpeed *= -1.02;
     ySpeed = random(-15, 15);
+    animateText(score);
   }
 
   if (xPos > width) {
     fill(255);
     rect(0, 0, 10000, 10000);
     fill(0);
-    text("score = " + score + " lol", width / 2, height / 2);
+    textAlign(CENTER);
+    textSize(32);
+    text("Final Score: " + score, width / 2, height / 2);
     noLoop();
+  }
+  
+  // Menampilkan skor di bawah
+  fill(255);
+  textAlign(CENTER);
+  text("Score: " + score, width / 2, height - 20);
+}
+
+void animateText(int score) {
+  textAlign(CENTER);
+  textSize(64);
+  fill(255);
+  
+  if (score % 3 == 0) {
+    text("Good", random(width), random(height));
+  } else if (score % 3 == 1) {
+    text("Wonderful", random(width), random(height));
+  } else {
+    text("Fantastic", random(width), random(height));
   }
 }
