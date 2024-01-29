@@ -7,6 +7,7 @@ int[] color2 = {int(random(0, 255)), int(random(0, 255)), int(random(0, 255))};
 int[] color3 = {int(random(0, 255)), int(random(0, 255)), int(random(0, 255))};
 
 int score = 0;
+ArrayList<AnimatedText> animatedTexts = new ArrayList<AnimatedText>();
 
 void setup() {
   size(700, 500);
@@ -16,6 +17,8 @@ void setup() {
 }
 
 void draw() {
+  background(100, 100, 100, 0); // Menggambar ulang latar belakang
+  
   rectMode(CORNER);
   fill(100, 100, 100, 20);
   rect(0, 0, 700, 500);
@@ -67,6 +70,16 @@ void draw() {
   fill(255);
   textAlign(CENTER);
   text("Score: " + score, width / 2, height - 20);
+  
+  // Memperbarui dan menampilkan animasi teks
+  for (int i = animatedTexts.size() - 1; i >= 0; i--) {
+    AnimatedText animatedText = animatedTexts.get(i);
+    animatedText.update();
+    animatedText.display();
+    if (animatedText.isFaded()) {
+      animatedTexts.remove(i);
+    }
+  }
 }
 
 void animateText(int score) {
@@ -75,10 +88,35 @@ void animateText(int score) {
   fill(255);
   
   if (score % 3 == 0) {
-    text("Good", random(width), random(height));
+    animatedTexts.add(new AnimatedText("Good", random(width), random(height)));
   } else if (score % 3 == 1) {
-    text("Wonderful", random(width), random(height));
+    animatedTexts.add(new AnimatedText("Wonderful", random(width), random(height)));
   } else {
-    text("Fantastic", random(width), random(height));
+    animatedTexts.add(new AnimatedText("Fantastic", random(width), random(height)));
+  }
+}
+
+class AnimatedText {
+  String text;
+  float x, y;
+  int opacity = 255;
+  
+  AnimatedText(String text, float x, float y) {
+    this.text = text;
+    this.x = x;
+    this.y = y;
+  }
+  
+  void update() {
+    opacity -= 2;
+  }
+  
+  void display() {
+    fill(255, opacity);
+    text(text, x, y);
+  }
+  
+  boolean isFaded() {
+    return opacity <= 0;
   }
 }
